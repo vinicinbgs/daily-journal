@@ -5,7 +5,8 @@ TODAY=$(date "+%Y%m%d")
 TODAY_LABEL=$(date "+%d/%m/%Y")
 DIR=$1
 TASK=$2
-FILENAME=$DIR/$TODAY"_test.md"
+TITLE=$4
+FILENAME=$DIR/$TODAY".md"
 NOW=$(date "+%H:%M:%S")
 
 # ASSETS VARIABLES
@@ -23,6 +24,14 @@ help() {
     exit 0
 }
 
+create_title() {
+    if [ -z "$TITLE" ]; then
+        echo "# Daily $TODAY_LABEL" >>$FILENAME # create file
+    else
+        echo "# $TITLE" >>$FILENAME
+    fi
+}
+
 create_directory() {
     # CREATE DIRECTORY
     if [ -d $DIR ]; then
@@ -38,7 +47,7 @@ create_file() {
     if [ -f $FILENAME ]; then # check if file exists
         echo -e "${INFO}File $FILENAME already exists."
     else
-        echo -e "# Daily $TODAY_LABEL" >>$FILENAME # create file
+        touch $FILENAME && create_title
         echo -e "${SUCCESS}File $FILENAME was created."
     fi
 }
@@ -48,15 +57,15 @@ add_task() {
     if [ -z "$TASK" ]; then # check if task is empty
         echo -e "${WARNING}You need to pass the task description"
     else
-        echo -e -n "\`\`\`sh [$NOW] - $TASK / " $(day_period_emotion) "\`\`\`\n" >>$FILENAME
+        echo -e -n "[$NOW] - $TASK / " $(day_period_emotion) "<br />\n" >>$FILENAME
 
-        echo -e "${SUCCESS}Time-Task was added in ${HIGHLIGHT} $FILENAME$"
+        echo -e "${SUCCESS}Time-Task was added in ${HIGHLIGHT} $FILENAME"
     fi
 }
 
 day_period_emotion() {
     noon=$(date -d 12:00:00 +"%H%M%S")
-    night=$(date -d 15:00:00 +"%H%M%S")
+    night=$(date -d 18:00:00 +"%H%M%S")
 
     if [[ "$NOW" > "$night" ]]; then
         echo -n "🌃"
@@ -69,18 +78,27 @@ day_period_emotion() {
     fi
 }
 
-run() {
-    # HELP
-    if [ "$1" = "-h" ]; then
-        help
-    fi
+while getopts "t:" flag; do
+    echo "penis"
+    case "${flag}" in
+    t) TITLE=${OPTARG} ;;
+    esac
+done
 
-    create_directory
-    create_file
+# HELP
+if [ "$1" = "-h" ]; then
+    help
+fi
+
+if [ "$3" = "-t" ]; then
+    create_title
     add_task
-}
+    exit 0
+fi
 
-run
+create_directory
+create_file
+add_task
 
 echo -e "----------------- START -----------------"$NOCOLOR
 
