@@ -1,33 +1,67 @@
 #!/bin/bash
 
-# VARIABLES
+# Feed arguments -d -t -k in run script without interactive mode
+while getopts ":d:t:k:s:" option; do
+    case $option in
+    d) DIR="$OPTARG" ;;
+    t) TITLE="$OPTARG" ;;
+    k) TASK="$OPTARG" ;;
+    s) STATUS="$OPTARG" ;;
+    esac
+done
+
+# File variables
 TODAY=$(date "+%Y%m%d")
 TODAY_LABEL=$(date "+%d/%m/%Y")
-DIR=$1
-TASK=$2
-TITLE=$4
-FILENAME=$DIR/$TODAY".md"
 NOW=$(date "+%H:%M:%S")
+FILENAME=$DIR/$TODAY".md"
+IS_NEW_FILE=false
 
-# ASSETS VARIABLES
+# Colors variables
 WARNING='\e[31m'
 SUCCESS='\e[32m'
 INFO='\e[36m'
 HIGHLIGHT='\e[33m'
 NOCOLOR='\e[97m'
 
+# ------------ FUNCTIONS ------------
+
 help() {
-    echo "Usage: $(basename $0)"
-    echo "[First parameter]: directory"
-    echo "[Second parameter]: task description"
-    echo "[example]: ./run.sh ciandt \"daily\""
+    echo "[Usage]: $(basename $0)"
+    printf "[Parameters]:\n -d directory\n -t \"title\"\n -k \"task description\"\n -s \"status\" (open, close, breakfast, lunch, dinner) \n"
+    echo "[Example]: ./run.sh -d example -k \"my first task\" -s open"
+    echo "[Help]: ./run.sh -h"
+    echo "[Interactive mode]: ./run.sh -i"
+    echo -e "${HIGHLIGHT}[Warning]: Important to use 'space' remember of quotes \"hello world\"${NOCOLOR}"
     exit 0
 }
 
+interactive() {
+    echo "Directory: "
+    read DIR
+
+    echo "Title: (press 'enter' to skip)"
+    read TITLE
+
+    echo "Task: "
+    read TASK
+
+    echo "Status: [open || close](press 'enter' to skip)"
+    read STATUS
+
+    format_space_to_underscore
+
+    FILENAME=$DIR/$TODAY".md"
+}
+
+format_space_to_underscore() {
+    DIR="${DIR// /_}"
+}
+
 create_title() {
-    if [ -z "$TITLE" ]; then
-        echo "# Daily $TODAY_LABEL" >>$FILENAME # create file
-    else
+    if [[ -z $TITLE ]] && [ $IS_NEW_FILE = true ]; then
+        echo "# Daily $TODAY_LABEL" >>$FILENAME
+    elif [[ -n $TITLE ]]; then
         echo "# $TITLE" >>$FILENAME
     fi
 }
@@ -44,11 +78,10 @@ create_directory() {
 
 create_file() {
     # CREATE FILE
-    if [ -f $FILENAME ]; then # check if file exists
-        echo -e "${INFO}File $FILENAME already exists."
-    else
-        touch $FILENAME && create_title
+    if [ ! -f $FILENAME ]; then # check if file exists
+        touch $FILENAME
         echo -e "${SUCCESS}File $FILENAME was created."
+        IS_NEW_FILE=true
     fi
 }
 
@@ -57,7 +90,7 @@ add_task() {
     if [ -z "$TASK" ]; then # check if task is empty
         echo -e "${WARNING}You need to pass the task description"
     else
-        echo -e -n "[$NOW] - $TASK / " $(day_period_emotion) "<br />\n" >>$FILENAME
+        echo -e -n "$(day_period_emotion)[$NOW] -" $TASK $ICON"<br />\n" >>$FILENAME
 
         echo -e "${SUCCESS}Time-Task was added in ${HIGHLIGHT} $FILENAME"
     fi
@@ -65,43 +98,53 @@ add_task() {
 
 day_period_emotion() {
     noon=$(date -d 12:00:00 +"%H%M%S")
-    night=$(date -d 18:00:00 +"%H%M%S")
+    night=$(date -d 23:00:00 +"%H%M%S")
 
     if [[ "$NOW" > "$night" ]]; then
-        echo -n "🌃"
+        echo -n "[🌃]"
 
     elif [[ "$NOW" > "$noon" ]]; then
-        echo -n "🌇"
+        echo -n "[🌇]"
 
     else
-        echo -n "🌅"
+        echo -n "[🌅]"
     fi
 }
 
-while getopts "t:" flag; do
-    echo "penis"
-    case "${flag}" in
-    t) TITLE=${OPTARG} ;;
-    esac
-done
+file_output() {
+    echo -e "----------------- START -----------------"$NOCOLOR
 
-# HELP
-if [ "$1" = "-h" ]; then
+    cat "$FILENAME"
+
+    echo -e "\n${HIGHLIGHT}----------------- END -----------------"
+}
+
+status() {
+    case $STATUS in
+    "open") ICON="[📖]" ;;
+    "done") ICON="[✅]" ;;
+    "close") ICON="[❌]" ;;
+    "breakfast") ICON="[🍞]" ;;
+    "lunch") ICON="[🍛]" ;;
+    "dinner") ICON="[🍜]" ;;
+    "pause") ICON="[⏸️]" ;;
+    esac
+}
+
+# ------------ RUN ------------
+if [ "$1" = "-i" ]; then # Interactive mode
+    interactive
+fi
+
+if [ "$1" = "-h" ]; then # Help
     help
 fi
 
-if [ "$3" = "-t" ]; then
-    create_title
-    add_task
-    exit 0
-fi
+format_space_to_underscore # Format DIR 'spaces' to 'underscore'
 
 create_directory
 create_file
+create_title
+status
 add_task
-
-echo -e "----------------- START -----------------"$NOCOLOR
-
-cat "$FILENAME"
-
-echo -e "\n${HIGHLIGHT}----------------- END -----------------"
+file_output
