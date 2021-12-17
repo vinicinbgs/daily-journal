@@ -3,12 +3,12 @@
 source ./.env
 
 # Feed arguments -d -t -k in run script without interactive mode
-while getopts ":d:t:k:s:id:" option; do
+while getopts ":d:t:k:s:n:" option; do
     case $option in
     d) DIR="$OPTARG" ;;
     t) TITLE="$OPTARG" ;;
     k) TASK="$OPTARG" ;;
-    "id") NUMBER_TASK="$OPTARG" ;;
+    n) NUMBER_TASK="$OPTARG" ;;
     s) STATUS="$OPTARG" ;;
     esac
 done
@@ -79,8 +79,8 @@ create_title() {
         echo "# $TITLE" >>$FILENAME
         if [[ $DISPLAY_STYLE = "table" ]]; then
             echo "" >>$FILENAME
-            echo "|ID|Description|Status|" >>$FILENAME
-            echo "|--|-----------|------|" >>$FILENAME
+            echo "|ID|Description|Status|Time|" >>$FILENAME
+            echo "|--|-----------|------|----|" >>$FILENAME
         fi
     fi
 }
@@ -112,7 +112,7 @@ add_task() {
         display_number_task="[$NUMBER_TASK]"
 
         if [[ $DISPLAY_STYLE = "table" ]]; then
-            echo -e "|$NUMBER_TASK|$TASK|$STATUS|" >>$FILENAME
+            echo -e "|$NUMBER_TASK|$TASK|$STATUS|$NOW|" >>$FILENAME
         else
             echo -e -n "$(day_period_emotion)$STATUS[$NOW]$display_number_task -" $TASK "<br />\n" >>$FILENAME
         fi
