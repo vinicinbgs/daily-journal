@@ -42,3 +42,11 @@ Will be created directory and file with follow name example/{timestamp}.md
 # Daily 17/12/2021
 [🌃][00:41:58] - my first task [✅]<br />
 ```
+
+# Configure
+Copy .env.e
+```bash
+cp .env.example .env
+```
+### Env Variables
+- export DIR='directory'

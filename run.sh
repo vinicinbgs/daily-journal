@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ./.env
+
 # Feed arguments -d -t -k in run script without interactive mode
 while getopts ":d:t:k:s:" option; do
     case $option in
