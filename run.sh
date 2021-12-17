@@ -3,11 +3,12 @@
 source ./.env
 
 # Feed arguments -d -t -k in run script without interactive mode
-while getopts ":d:t:k:s:" option; do
+while getopts ":d:t:k:s:id:" option; do
     case $option in
     d) DIR="$OPTARG" ;;
     t) TITLE="$OPTARG" ;;
     k) TASK="$OPTARG" ;;
+    "id") NUMBER_TASK="$OPTARG" ;;
     s) STATUS="$OPTARG" ;;
     esac
 done
@@ -55,6 +56,9 @@ interactive() {
     echo "Task: (input a creative task description)"
     read TASK
 
+    echo "ID: "
+    read NUMBER_TASK
+
     echo "Status: (press 'enter' to skip)"
     echo "[ o / open 📖 | do / done ✅ | c / close ❌ | b / breakfast 🍞 | l / lunch 🍛 | di / dinner 🍜 | p / pause ⏸️ ]"
     read STATUS
@@ -73,6 +77,11 @@ create_title() {
         echo "# Daily $TODAY_LABEL" >>$FILENAME
     elif [[ -n $TITLE ]]; then
         echo "# $TITLE" >>$FILENAME
+        if [[ $DISPLAY_STYLE = "table" ]]; then
+            echo "" >>$FILENAME
+            echo "|ID|Description|Status|" >>$FILENAME
+            echo "|--|-----------|------|" >>$FILENAME
+        fi
     fi
 }
 
@@ -100,7 +109,13 @@ add_task() {
     if [ -z "$TASK" ]; then # check if task is empty
         echo -e "${WARNING}You need to pass the task description"
     else
-        echo -e -n "$(day_period_emotion)$ICON[$NOW] -" $TASK "<br />\n" >>$FILENAME
+        display_number_task="[$NUMBER_TASK]"
+
+        if [[ $DISPLAY_STYLE = "table" ]]; then
+            echo -e "|$NUMBER_TASK|$TASK|$STATUS|" >>$FILENAME
+        else
+            echo -e -n "$(day_period_emotion)$STATUS[$NOW]$display_number_task -" $TASK "<br />\n" >>$FILENAME
+        fi
 
         echo -e "${SUCCESS}Time-Task was added in ${HIGHLIGHT} $FILENAME"
     fi
@@ -132,13 +147,13 @@ file_output() {
 
 status() {
     case $STATUS in
-    "open" | "o") ICON="[📖]" ;;
-    "done" | "do") ICON="[✅]" ;;
-    "close" | "c") ICON="[❌]" ;;
-    "breakfast" | "b") ICON="[🍞]" ;;
-    "lunch" | "l") ICON="[🍛]" ;;
-    "dinner" | "di") ICON="[🍜]" ;;
-    "pause" | "p") ICON="[⏸️]" ;;
+    "open" | "o") STATUS="[📖]" ;;
+    "done" | "do") STATUS="[✅]" ;;
+    "close" | "c") STATUS="[❌]" ;;
+    "breakfast" | "b") STATUS="[🍞]" ;;
+    "lunch" | "l") STATUS="[🍛]" ;;
+    "dinner" | "di") STATUS="[🍜]" ;;
+    "pause" | "p") STATUS="[⏸️]" ;;
     esac
 }
 
