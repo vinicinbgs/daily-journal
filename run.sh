@@ -98,9 +98,10 @@ add_task() {
 
 day_period_emotion() {
     noon=$(date -d 12:00:00 +"%H%M%S")
-    night=$(date -d 23:00:00 +"%H%M%S")
+    night=$(date -d 18:00:00 +"%H%M%S")
+    midnight=$(date -d 03:00:00 +"%H%M%S")
 
-    if [[ "$NOW" > "$night" ]]; then
+    if [[ "$NOW" > "$night" ]] || [[ "$NOW" < "$midnight" ]]; then
         echo -n "[🌃]"
 
     elif [[ "$NOW" > "$noon" ]]; then
