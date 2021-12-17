@@ -47,7 +47,7 @@ Will be created directory and file with follow name example/{timestamp}.md
 ```
 
 # Configure
-Copy .env.e
+Copy .env.example to .env
 ```bash
 cp .env.example .env
 ```
