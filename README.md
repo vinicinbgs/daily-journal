@@ -6,7 +6,7 @@
  -d directory
  -t "title"
  -k "task description"
- -s "status" (open, close, breakfast, lunch, dinner) 
+ -s "status" (open, done, close, breakfast, lunch, dinner, pause)
 
 [Example]: ./run.sh -d example -k "my first task" -s open
 
