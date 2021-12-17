@@ -1,0 +1,6 @@
+*/
+.env
+!.env.example
+!run.sh
+!README.md
+!example/
