@@ -12,7 +12,7 @@
 
 [Help]: ./run.sh -h
 
-[Interactive mode]: ./run.sh -i
+[Interactive mode]: ./run.sh -i (press CTRL+C to exit)
 
 [Warning]: Important to use 'space' remember of quotes "hello world"
 ```

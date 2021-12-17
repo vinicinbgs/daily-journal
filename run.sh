@@ -44,8 +44,10 @@ fi
 
 # ------------ FUNCTIONS ------------
 interactive() {
-    echo "Directory: "
-    read DIR
+    if [[ -z $DIR ]]; then
+        echo "Directory: "
+        read DIR
+    fi
 
     echo "Title: (press 'enter' to skip)"
     read TITLE
