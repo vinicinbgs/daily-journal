@@ -19,6 +19,8 @@
 
 # Execute
 ```bash
+cd daily-blog
+chmod +x run.sh
 ./run.sh -d example -k "my first task" -s done
 ```
 Will be created directory and file with follow name example/{timestamp}.md

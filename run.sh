@@ -24,18 +24,23 @@ INFO='\e[36m'
 HIGHLIGHT='\e[33m'
 NOCOLOR='\e[97m'
 
-# ------------ FUNCTIONS ------------
-
 help() {
-    echo "[Usage]: $(basename $0)"
-    printf "[Parameters]:\n -d directory\n -t \"title\"\n -k \"task description\"\n -s \"status\" (open, close, breakfast, lunch, dinner) \n"
-    echo "[Example]: ./run.sh -d example -k \"my first task\" -s open"
-    echo "[Help]: ./run.sh -h"
-    echo "[Interactive mode]: ./run.sh -i"
+    echo -e "${INFO}[Usage]${NOCOLOR}: $(basename $0)"
+    printf "${INFO}[Parameters]${NOCOLOR}:\n -d directory\n -t \"title\"\n -k \"task description\"\n -s \"status\" (open, close, breakfast, lunch, dinner) \n"
+    echo -e "${INFO}[Example]${NOCOLOR}: ./run.sh -d example -k \"my first task\" -s open"
+    echo -e "${INFO}[Help]${NOCOLOR}: ./run.sh -h"
+    echo -e "${INFO}[Interactive mode]${NOCOLOR}: ./run.sh -i"
     echo -e "${HIGHLIGHT}[Warning]: Important to use 'space' remember of quotes \"hello world\"${NOCOLOR}"
     exit 0
 }
 
+if [[ -z "$@" ]]; then
+    echo -e "${WARNING}[Error] - Please check the arguments below:${NOCOLOR}"
+    help
+    exit 0
+fi
+
+# ------------ FUNCTIONS ------------
 interactive() {
     echo "Directory: "
     read DIR
