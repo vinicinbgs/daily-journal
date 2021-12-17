@@ -25,5 +25,5 @@ Will be created directory and file with follow name example/{timestamp}.md
 
 ```markdown
 # Daily 17/12/2021
-[🌅][00:27:48] - my first task [✅]<br />
+[🌃][00:41:58] - my first task [✅]<br />
 ```
