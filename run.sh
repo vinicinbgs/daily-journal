@@ -3,13 +3,14 @@
 source ./.env
 
 # Feed arguments -d -t -k in run script without interactive mode
-while getopts ":d:t:k:s:n:" option; do
+while getopts ":d:t:k:s:n:f:" option; do
     case $option in
     d) DIR="$OPTARG" ;;
     t) TITLE="$OPTARG" ;;
     k) TASK="$OPTARG" ;;
     n) NUMBER_TASK="$OPTARG" ;;
     s) STATUS="$OPTARG" ;;
+    f) DISPLAY_STYLE="$OPTARG" ;;
     esac
 done
 
@@ -28,15 +29,30 @@ HIGHLIGHT='\e[33m'
 NOCOLOR='\e[97m'
 
 help() {
+    # Usage
     echo -e "${INFO}[Usage]${NOCOLOR}: $(basename $0)"
-    printf "${INFO}[Parameters]${NOCOLOR}:\n -d directory\n -t \"title\"\n -k \"task description\"\n -s \"status\" (open, close, breakfast, lunch, dinner) \n"
+    # Parameters
+    printf "${INFO}[Parameters]${NOCOLOR}:
+    -d directory
+    -t \"title\"
+    -k \"task description\"
+    -s \"status\" [open | close | breakfast | lunch | dinner]
+    -n id
+    -f display [table | log]
+    \n"
+
+    # Example
     echo -e "${INFO}[Example]${NOCOLOR}: ./run.sh -d example -k \"my first task\" -s open"
+    # Help
     echo -e "${INFO}[Help]${NOCOLOR}: ./run.sh -h"
+    # Interactive mode
     echo -e "${INFO}[Interactive mode]${NOCOLOR}: ./run.sh -i"
+    # Warning
     echo -e "${HIGHLIGHT}[Warning]: Important to use 'space' remember of quotes \"hello world\"${NOCOLOR}"
     exit 0
 }
 
+# Check if fill any argument
 if [[ -z "$@" ]]; then
     echo -e "${WARNING}[Error] - Please check the arguments below:${NOCOLOR}"
     help

@@ -53,6 +53,7 @@ cp .env.example .env
 ```
 ### Env Variables
 - export DIR='directory'
+- export DISPLAY_STYLE='table' | 'log'
 
 ### Tips & Tricks
 - if set **DIR** in **.env** you can omit parameter **-d** in ```./run.sh -t title -k "task"```
