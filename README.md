@@ -1,4 +1,7 @@
 # How it works
+
+![demonstration](./assets/example.gif)
+
 ```bash
 [Usage]: run.sh
 

@@ -52,10 +52,11 @@ interactive() {
     echo "Title: (press 'enter' to skip)"
     read TITLE
 
-    echo "Task: "
+    echo "Task: (input a creative task description)"
     read TASK
 
-    echo "Status: [open || close](press 'enter' to skip)"
+    echo "Status: (press 'enter' to skip)"
+    echo "[ o / open 📖 | do / done ✅ | c / close ❌ | b / breakfast 🍞 | l / lunch 🍛 | di / dinner 🍜 | p / pause ⏸️ ]"
     read STATUS
 
     format_space_to_underscore
@@ -131,13 +132,13 @@ file_output() {
 
 status() {
     case $STATUS in
-    "open") ICON="[📖]" ;;
-    "done") ICON="[✅]" ;;
-    "close") ICON="[❌]" ;;
-    "breakfast") ICON="[🍞]" ;;
-    "lunch") ICON="[🍛]" ;;
-    "dinner") ICON="[🍜]" ;;
-    "pause") ICON="[⏸️]" ;;
+    "open" | "o") ICON="[📖]" ;;
+    "done" | "do") ICON="[✅]" ;;
+    "close" | "c") ICON="[❌]" ;;
+    "breakfast" | "b") ICON="[🍞]" ;;
+    "lunch" | "l") ICON="[🍛]" ;;
+    "dinner" | "di") ICON="[🍜]" ;;
+    "pause" | "p") ICON="[⏸️]" ;;
     esac
 }
 
