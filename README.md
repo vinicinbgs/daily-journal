@@ -17,14 +17,27 @@
 [Warning]: Important to use 'space' remember of quotes "hello world"
 ```
 
-# Execute
+# 1. Execute
 ```bash
 cd daily-blog
 chmod +x run.sh
 ./run.sh -d example -k "my first task" -s done
 ```
-Will be created directory and file with follow name example/{timestamp}.md
 
+## 1.1 Output
+```bash
+Directory example_teste was created.
+File example_teste/20211217.md was created.
+Time-Task was added in  example_teste/20211217.md
+
+----------------- START -----------------
+# Daily 17/12/2021
+[🌃][01:16:44] - create folder with space [✅]<br />
+
+----------------- END -----------------
+```
+## 1.2 File created
+Will be created directory and file with follow name example/{timestamp}.md
 ```markdown
 # Daily 17/12/2021
 [🌃][00:41:58] - my first task [✅]<br />
