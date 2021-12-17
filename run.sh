@@ -95,7 +95,7 @@ add_task() {
     if [ -z "$TASK" ]; then # check if task is empty
         echo -e "${WARNING}You need to pass the task description"
     else
-        echo -e -n "**$(day_period_emotion)[$NOW] -**" $TASK $ICON"<br />\n" >>$FILENAME
+        echo -e -n "$(day_period_emotion)$ICON[$NOW] -" $TASK "<br />\n" >>$FILENAME
 
         echo -e "${SUCCESS}Time-Task was added in ${HIGHLIGHT} $FILENAME"
     fi
