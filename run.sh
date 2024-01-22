@@ -22,15 +22,15 @@ FILENAME=$DIR/$TODAY".md"
 IS_NEW_FILE=false
 
 # Colors variables
-WARNING='\e[31m'
-SUCCESS='\e[32m'
-INFO='\e[36m'
-HIGHLIGHT='\e[33m'
-NOCOLOR='\e[97m'
+WARNING='\033[31m'
+SUCCESS='\033[32m'
+INFO='\033[36m'
+HIGHLIGHT='\033[33m'
+NOCOLOR='\033[97m'
 
 help() {
     # Usage
-    echo -e "${INFO}[Usage]${NOCOLOR}: $(basename $0)"
+    echo "${INFO}[Usage]${NOCOLOR}: $(basename $0)"
     # Parameters
     printf "${INFO}[Parameters]${NOCOLOR}:
     -d directory
@@ -42,19 +42,19 @@ help() {
     \n"
 
     # Example
-    echo -e "${INFO}[Example]${NOCOLOR}: ./run.sh -d example -k \"my first task\" -s open"
+    echo "${INFO}[Example]${NOCOLOR}: ./run.sh -d example -k \"my first task\" -s open"
     # Help
-    echo -e "${INFO}[Help]${NOCOLOR}: ./run.sh -h"
+    echo "${INFO}[Help]${NOCOLOR}: ./run.sh -h"
     # Interactive mode
-    echo -e "${INFO}[Interactive mode]${NOCOLOR}: ./run.sh -i"
+    echo "${INFO}[Interactive mode]${NOCOLOR}: ./run.sh -i"
     # Warning
-    echo -e "${HIGHLIGHT}[Warning]: Important to use 'space' remember of quotes \"hello world\"${NOCOLOR}"
+    echo "${HIGHLIGHT}[Warning]: Important to use 'space' remember of quotes \"hello world\"${NOCOLOR}"
     exit 0
 }
 
 # Check if fill any argument
 if [[ -z "$@" ]]; then
-    echo -e "${WARNING}[Error] - Please check the arguments below:${NOCOLOR}"
+    echo "${WARNING}[Error] - Please check the arguments below:${NOCOLOR}"
     help
     exit 0
 fi
@@ -104,10 +104,10 @@ create_title() {
 create_directory() {
     # CREATE DIRECTORY
     if [ -d $DIR ]; then
-        echo -e "${INFO}Directory $DIR already exists."
+        echo "${INFO}Directory $DIR already exists."
     else
         mkdir -p $DIR
-        echo -e "${SUCCESS}Directory $DIR was created."
+        echo "${SUCCESS}Directory $DIR was created."
     fi
 }
 
@@ -115,7 +115,7 @@ create_file() {
     # CREATE FILE
     if [ ! -f $FILENAME ]; then # check if file exists
         touch $FILENAME
-        echo -e "${SUCCESS}File $FILENAME was created."
+        echo "${SUCCESS}File $FILENAME was created."
         IS_NEW_FILE=true
     fi
 }
@@ -123,17 +123,17 @@ create_file() {
 add_task() {
     # ADD HOUR AND TASK
     if [ -z "$TASK" ]; then # check if task is empty
-        echo -e "${WARNING}You need to pass the task description"
+        echo "${WARNING}You need to pass the task description"
     else
         display_number_task="[$NUMBER_TASK]"
 
         if [[ $DISPLAY_STYLE = "table" ]]; then
-            echo -e "|$NUMBER_TASK|$TASK|$STATUS|$NOW|" >>$FILENAME
+            echo "|$NUMBER_TASK|$TASK|$STATUS|$NOW|" >>$FILENAME
         else
-            echo -e -n "$(day_period_emotion)$STATUS[$NOW]$display_number_task -" $TASK "<br />\n" >>$FILENAME
+            echo -n "$(day_period_emotion)$STATUS[$NOW]$display_number_task -" $TASK "<br />\n" >>$FILENAME
         fi
 
-        echo -e "${SUCCESS}Time-Task was added in ${HIGHLIGHT} $FILENAME"
+        echo "${SUCCESS}Time-Task was added in ${HIGHLIGHT} $FILENAME"
     fi
 }
 
@@ -154,11 +154,11 @@ day_period_emotion() {
 }
 
 file_output() {
-    echo -e "----------------- START -----------------"$NOCOLOR
+    echo "----------------- START -----------------"$NOCOLOR
 
     cat "$FILENAME"
 
-    echo -e "\n${HIGHLIGHT}----------------- END -----------------"
+    echo "\n${HIGHLIGHT}----------------- END -----------------"
 }
 
 status() {
