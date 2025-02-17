@@ -143,13 +143,13 @@ day_period_emotion() {
     midnight=$(date -d 03:00:00 +"%H%M%S")
 
     if [[ "$NOW" > "$night" ]] || [[ "$NOW" < "$midnight" ]]; then
-        echo -n "[🌃]"
+        echo "🌃"
 
     elif [[ "$NOW" > "$noon" ]]; then
-        echo -n "[🌇]"
+        echo "🌇"
 
     else
-        echo -n "[🌅]"
+        echo "🌅"
     fi
 }
 
